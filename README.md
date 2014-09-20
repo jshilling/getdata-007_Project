@@ -1,4 +1,4 @@
-getdata-007_Project
-===================
+#Getting and Cleaning Data Course Projcect
+(Coursera getdata-007)
 
-Course Project for Getting and Cleaning Data (Coursera)
+##Files

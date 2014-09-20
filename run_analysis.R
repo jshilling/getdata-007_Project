@@ -1,6 +1,16 @@
-## Go to top level directory
-setwd("C:/Users/IBM_ADMIN/Dropbox/R Projects/DataCleaningProject/UCI HAR Dataset")
+##  run_analysis.R
+##  
 
+## Must be run from one directory above /UCI HAR Dataset.
+## Go to top level directory
+setwd("C:/Users/Jeff/Dropbox/R Projects/DataCleaningProject/UCI HAR Dataset")
+#setwd("C:/Users/IBM_ADMIN/Dropbox/R Projects/DataCleaningProject/UCI HAR Dataset")
+
+
+library(reshape2)
+library(plyr)
+library(dplyr)
+library(data.table)
 
 createFrame <- function(label, good) {
     ## function to read the known files
@@ -44,8 +54,41 @@ good <- grep("mean()|std()", features[,2])
 test <- createFrame("test", good)
 train <- createFrame("train", good)
 ## merge the two data sets
-activityData <- rbind(test,train)
+activityData <- data.table(rbind(test,train))
 rm(test,train)  # free up some RAM
 
+## identify which are the mean and std variables
+## then melt the table using those variables
+meancols <- grep("mean", colnames(activityData))
+stdcols <- grep("std", colnames(activityData))
+activityMelt <- melt(activityData,id.vars = c(1, 2), measure.vars = c(meancols, stdcols), variable.factors=FALSE)
+setkey(activityMelt, subject, activity)
+rm(activityData)
 
+## split the freature content into the varialbe measured
+## and the type of measurement (mean or std).
+activityMelt[,measure := lapply(activityMelt$variable, function (x) {
+    l <- strsplit(as.character(x), "\\.")
+    l[[1]][2]
+})]
+activityMelt$measure <- as.character(activityMelt$measure)
+activityMelt[,var := lapply(activityMelt$variable, function (x) {
+  l <- strsplit(as.character(x), "\\.")
+  p <- paste(l[[1]][1], "_", l[[1]][length(l[[1]])], sep = "")
+})]
+activityMelt$variable <- as.character(activityMelt$variable)
+activityMelt$var <- as.character(activityMelt$var)
+activityMelt$variable <- activityMelt$var
+activityMelt[,var:=NULL]
+setcolorder(activityMelt,c("subject", "activity", "variable", "measure", "value"))
 
+## write a tidy data set
+outfile = "tidyMotionData.csv"
+write.csv(activityMelt, outfile, row.names = FALSE)
+
+actSummary <- activityMelt[,mean(value), by = list(subject, activity, variable, measure)]
+setkey(actSummary, subject, activity, variable, measure)
+
+## write a tidy summary data set
+outfile = "tidyMotionSummaryData.csv"
+write.csv(actSummary, outfile, row.names = FALSE)
