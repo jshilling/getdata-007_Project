@@ -1,4 +1,4 @@
-#Getting and Cleaning Data Course Projcect
+#Getting and Cleaning Data Course Project
 (Coursera getdata-007)
 
 The object of this analysis is to create a tidy data set from Samsung Galaxy S smartphone accelerometer data which was gathered from 30 subjects across 6 activities.
