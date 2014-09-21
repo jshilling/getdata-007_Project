@@ -3,8 +3,8 @@
 
 ## Must be run from one directory above /UCI HAR Dataset.
 ## Go to top level directory
-setwd("C:/Users/Jeff/Dropbox/R Projects/DataCleaningProject/UCI HAR Dataset")
-#setwd("C:/Users/IBM_ADMIN/Dropbox/R Projects/DataCleaningProject/UCI HAR Dataset")
+#setwd("C:/Users/Jeff/Dropbox/R Projects/DataCleaningProject/UCI HAR Dataset")
+setwd("C:/Users/IBM_ADMIN/Dropbox/R Projects/DataCleaningProject/UCI HAR Dataset")
 
 
 library(reshape2)
@@ -82,13 +82,13 @@ activityMelt$variable <- activityMelt$var
 activityMelt[,var:=NULL]
 setcolorder(activityMelt,c("subject", "activity", "variable", "measure", "value"))
 
-## write a tidy data set
-outfile = "tidyMotionData.csv"
-write.csv(activityMelt, outfile, row.names = FALSE)
+## creat and write the tidy summary data set
 
 actSummary <- activityMelt[,mean(value), by = list(subject, activity, variable, measure)]
+setnames(actSummary, "V1", "value")
 setkey(actSummary, subject, activity, variable, measure)
 
+
 ## write a tidy summary data set
-outfile = "tidyMotionSummaryData.csv"
-write.csv(actSummary, outfile, row.names = FALSE)
+outfile = "tidyMotionSummaryData.txt"
+write.table(actSummary, outfile, row.names = FALSE)
