@@ -53,9 +53,9 @@ rotation is in radians/second
 | tBodyAcc_X | g | linear acceleration along the x-axis |
 | tBodyAcc_Y | g | linear acceleration along the y-axis |
 | tBodyAcc_Z | g | linear acceleration along the z-axis |
-| tBodyAccJerk_X | sudden linear acceleration along the y-axis |
-| tBodyAccJerk_Y | sudden linear acceleration along the z-axis |
-| tBodyAccJerk_Z | sudden linear acceleration along the x-axis |
+| tBodyAccJerk_X | g | sudden linear acceleration along the y-axis |
+| tBodyAccJerk_Y | g | sudden linear acceleration along the z-axis |
+| tBodyAccJerk_Z | g | sudden linear acceleration along the x-axis |
 | tBodyAccJerkMag_ | g | force of sudden linear acceleration |
 | tBodyAccMag_ | g | effective linear acceleration |
 | tBodyGyro_X | rad/sec | rotation around the x-axis |
